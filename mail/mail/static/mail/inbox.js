@@ -55,14 +55,17 @@ fetch(`/emails/${mailbox}`)
       newEmail.className = singleEmail.read ? 'read': 'unread';
     
     // Add event to view eamil
-      newEmail.addEventListener('click', function() {
-          console.log('This element has been clicked!')
-      });
+      newEmail.addEventListener('click', email_view(singleEmail.id));
       document.querySelector('#emails-view').append(newEmail);
     });
 
     // ... do something else with emails ...
 });
+}
+
+
+function email_view(){
+  
 }
 
 

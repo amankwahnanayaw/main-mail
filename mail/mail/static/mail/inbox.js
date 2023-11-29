@@ -52,7 +52,7 @@ fetch(`/emails/${mailbox}`)
       <p>${singleEmail.timestamp}</p>
       `;
     // change background color
-      
+      newEmail.className = singleEmail.read ? 'read': 'unread';
     
     // A
       newEmail.addEventListener('click', function() {

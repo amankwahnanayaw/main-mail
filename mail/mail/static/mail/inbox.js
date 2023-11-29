@@ -6,6 +6,9 @@ document.addEventListener('DOMContentLoaded', function() {
   document.querySelector('#archived').addEventListener('click', () => load_mailbox('archive'));
   document.querySelector('#compose').addEventListener('click', compose_email);
 
+  // submit handler
+  document.querySelector("#compose-form").addEventListener("submit", send_email)
+
   // By default, load the inbox
   load_mailbox('inbox');
 });
@@ -30,4 +33,62 @@ function load_mailbox(mailbox) {
 
   // Show the mailbox name
   document.querySelector('#emails-view').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
+
+// get emails for mailbox and user
+fetch(`/emails/${mailbox}`)
+.then(response => response.json())
+.then(emails => {
+    // loop throuhg emails and create a div for each
+    emails.forEach(singleEmail => {
+      
+      console.log(singleEmail);
+
+    //creat a div for each email
+      const newEmail = document.createElement('div');
+      newEmail.className = "list-group-item";
+      newEmail.innerHTML = `
+      <h6>Sender: ${singleEmail.sender}</h6>
+      <h5>Subject: ${singleEmail.subject}</h5>
+      <p>${singleEmail.timestamp}</p>
+      `;
+    // change background color
+      
+    
+    // A
+      newEmail.addEventListener('click', function() {
+          console.log('This element has been clicked!')
+      });
+      document.querySelector('#emails-view').append(newEmail);
+    });
+
+    // ... do something else with emails ...
+});
+}
+
+
+function send_email(event){
+  event.preventDefault();
+
+
+// store mails fields
+  const recipients = document.querySelector("#compose-recipients").value;
+  const subject = document.querySelector("#compose-subject").value;
+  const body = document.querySelector("#compose-body").value;
+
+
+// send data to backend
+fetch('/emails', {
+  method: 'POST',
+  body: JSON.stringify({
+      recipients: recipients,
+      subject: subject,
+      body: body
+  })
+})
+.then(response => response.json())
+.then(result => {
+    // Print result
+    console.log(result);
+    load_mailbox('sent')
+});
 }

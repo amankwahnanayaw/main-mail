@@ -54,7 +54,7 @@ fetch(`/emails/${mailbox}`)
     // change background color
       newEmail.className = singleEmail.read ? 'read': 'unread';
     
-    // A
+    // Add event to view eamil
       newEmail.addEventListener('click', function() {
           console.log('This element has been clicked!')
       });

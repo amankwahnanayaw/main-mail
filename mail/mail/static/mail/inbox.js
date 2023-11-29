@@ -65,9 +65,14 @@ fetch(`/emails/${mailbox}`)
 });
 }
 
-
+// view a particular email by id
 function email_view(id) {
-  console.log(id)
+  fetch(`/emails/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify({
+        archived: true
+    })
+  })
 }
 
 

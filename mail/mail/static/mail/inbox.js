@@ -18,6 +18,7 @@ function compose_email() {
   // Show compose view and hide other views
   document.querySelector('#emails-view').style.display = 'none';
   document.querySelector('#compose-view').style.display = 'block';
+  document.querySelector('#email-detail-view').style.display = 'none';
 
   // Clear out composition fields
   document.querySelector('#compose-recipients').value = '';
@@ -30,6 +31,7 @@ function load_mailbox(mailbox) {
   // Show the mailbox and hide other views
   document.querySelector('#emails-view').style.display = 'block';
   document.querySelector('#compose-view').style.display = 'none';
+  document.querySelector('#email-detail-view').style.display = 'none';
 
   // Show the mailbox name
   document.querySelector('#emails-view').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
@@ -67,12 +69,52 @@ fetch(`/emails/${mailbox}`)
 
 // view a particular email by id
 function email_view(id) {
-  fetch(`/emails/${id}`, {
-    method: 'PUT',
-    body: JSON.stringify({
-        archived: true
-    })
-  })
+  fetch(`/emails/${id}`)
+  .then(response => response.json())
+  .then(email => {
+      // Print email
+      console.log(email);
+
+      document.querySelector('#emails-view').style.display = 'none';
+      document.querySelector('#compose-view').style.display = 'none';
+      document.querySelector('#email-detail-view').style.display = 'block';
+
+
+      document.querySelector('#email-detail-view').innerHTML = `
+      <ul class="list-group">
+        <li class="list-group-item"><strong>From:</strong> ${email.semder}</li>
+        <li class="list-group-item"><strong>To:</strong> ${email.recipients}</li>
+        <li class="list-group-item"><strong>Subject:</strong> ${email.subject}</li>
+        <li class="list-group-item"><strong>Timestamp:</strong> ${email.timestamp}</li>
+        <li class="list-group-item">${email.body}</li>
+      </ul>
+      `
+
+      // change to read
+      if (!email.read){
+        fetch(`/emails/${email.id}`), {
+          method: 'PUT',
+          body: JSON.stringify({
+            read: true
+          })
+        }
+      }
+
+      //Archive/Unarchive logic
+      const btn_arc = document.createElement('button');
+      btn_arc.innerHTML = email.archive ? "Unarchive" : "Archive";
+      btn_arc.className = email.archive ? "btn btn-success" : "btn btn-danger";
+      btn_arc.addEventListener('click', function() {
+        fetch(`/email/${email.id}`, {
+          method: 'PUT',
+          body: JSON.stringify({
+            archived : !email.archived
+          })
+        })
+        .then(() => {load_mailbox('archive')})
+      })
+  });
+  document.querySelector('#email-detail-view').append(btn_arc);
 }
 
 

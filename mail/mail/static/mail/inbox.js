@@ -124,7 +124,7 @@ function email_view(id) {
   btn_reply.addEventListener('click', function() {
     console.log("Reply");
   });
-  document.querySelector('#email-detail-view').append(btn_)
+  document.querySelector('#email-detail-view').append(btn_reply)
 }
 
 

@@ -101,10 +101,10 @@ function email_view(id) {
       }
 
       //Archive/Unarchive logic
-      const btn_arc = document.createElement('button');
-      btn_arc.innerHTML = email.archive ? "Unarchive" : "Archive";
-      btn_arc.className = email.archive ? "btn btn-success" : "btn btn-danger";
-      btn_arc.addEventListener('click', function() {
+      const btn_arch = document.createElement('button');
+      btn_arch.innerHTML = email.archive ? "Unarchive" : "Archive";
+      btn_arch.className = email.archive ? "btn btn-success" : "btn btn-danger";
+      btn_arch.addEventListener('click', function() {
         fetch(`/email/${email.id}`, {
           method: 'PUT',
           body: JSON.stringify({
@@ -114,7 +114,7 @@ function email_view(id) {
         .then(() => {load_mailbox('archive')})
       })
   });
-  document.querySelector('#email-detail-view').append(btn_arc);
+  document.querySelector('#email-detail-view').append(btn_arch);
 }
 
 

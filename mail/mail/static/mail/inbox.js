@@ -121,7 +121,8 @@ function email_view(id) {
       btn_reply.innerHTML = "Reply";
       btn_reply.className = "btn btn-info";
       btn_reply.addEventListener('click', function() {
-        console.log("Reply");
+        compose_email();
+        document.qu
       });
       document.querySelector('#email-detail-view').append(btn_reply);
   });

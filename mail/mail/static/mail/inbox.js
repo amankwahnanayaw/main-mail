@@ -115,6 +115,16 @@ function email_view(id) {
       })
   });
   document.querySelector('#email-detail-view').append(btn_arch);
+
+
+  //Reply button logic
+  const btn_reply = document.createElement('button');
+  btn_reply.innerHTML = "Reply";
+  btn_reply.className = "btn btn-info";
+  btn_reply.addEventListener('click', function() {
+    console.log("Reply");
+  });
+  document.querySelector('#email-detail-view').append(btn_)
 }
 
 
